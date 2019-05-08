@@ -6,6 +6,7 @@ except ImportError:
 import pytesseract
 from openCV_core import locateCheckBoxes
 
+
 def ocr_core(imgPath):
     '''
     (string) -> string
@@ -16,16 +17,19 @@ def ocr_core(imgPath):
     # Pillow will be used to open the image, and PyTesseract
     # will be used to parse strings from the image
     parsedText = pytesseract.image_to_string(Image.open(imgPath))
-
+    parsedTextD = pytesseract.image_to_data(Image.open(imgPath))
+    print(parsedTextD)
+    # parsedTextLocation = pytesseract.image_to_boxes(Image.open(imgPath))
     # put all parsed text into an array
     parsedTextArr = [i for i in parsedText]
-    # traverse the parssed text to find the special char to start openCV
+    print(parsedTextArr)
+
+    # traverse the parsed text to find the special char to start openCV
     for j in range(len(parsedTextArr)):
-        if parsedTextArr[j] == 'o':
+        if parsedTextArr[j] == 'x' and parsedTextArr[j-1] == 'x':
             locateCheckBoxes(imgPath)
-    # retrun the parsed text
     return parsedText
 
-if __name__ == '__main__':
-    print(ocr_core('images/box.PNG'))
 
+if __name__ == '__main__':
+    ocr_core('images/check.PNG')
